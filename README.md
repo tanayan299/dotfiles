@@ -5,9 +5,17 @@
 #yum install vim git vim-enhanced
 ```
 clone this repository
+
+1. to setup vimrc
 ```
-cp dotfiles/vimfiles $HOME
+cp dotfiles/vimfiles.tar $HOME
 tar -xvf vimfiles.tar
+```
+2. to setup bashrc
+```
+cd ditfiles
+cp .config x86_64-unknown-linux-musl .bashrc $HOME
+source .bashrc
 ```
 
 ## Second
