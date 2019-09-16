@@ -5,6 +5,7 @@
 #yum install vim git vim-enhanced
 ```
 clone this repository
+
 1. to setup vimrc
 ```
 cp dotfiles/vimfiles.tar $HOME
