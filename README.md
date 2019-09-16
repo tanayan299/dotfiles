@@ -4,6 +4,11 @@
 ```
 #yum install vim git vim-enhanced
 ```
+clone this repository
+```
+cp dotfiles/vimfiles $HOME
+tar -xvf vimfiles.tar
+```
 
 ## Second
 ```
