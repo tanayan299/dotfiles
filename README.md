@@ -1,11 +1,11 @@
 # vimrc
 
-##First
+## First
 ```
 #yum install vim git vim-enhanced
 ```
 
-##Second
+## Second
 ```
 $ vim
 
@@ -14,7 +14,7 @@ $ vim
 :PlugUpdate
 ```
 
-##Install Powerline Fonts
+## Install Powerline Fonts
 ```
 git clone https://github.com/powerline/fonts
 ```
