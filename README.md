@@ -15,6 +15,7 @@ tar -xvf vimfiles.tar
 ```
 cd dotfiles
 cp -rf .config x86_64-unknown-linux-musl .bashrc $HOME
+cd
 source .bashrc
 ```
 
