@@ -13,7 +13,7 @@ tar -xvf vimfiles.tar
 ```
 2. to setup bashrc
 ```
-cd ditfiles
+cd dotfiles
 cp .config x86_64-unknown-linux-musl .bashrc $HOME
 source .bashrc
 ```
