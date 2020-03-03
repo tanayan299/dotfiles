@@ -62,12 +62,12 @@ set backspace=indent,eol,start  " Enable delete on backspace
 autocmd FileType * setlocal formatoptions-=ro
 
 " > MOVING
-set scrolloff=5     " keep 5 lines when scrolling
-set nostartofline   " don't jump to first character when paging
+set scrolloff=5         " keep 5 lines when scrolling
+set nostartofline       " don't jump to first character when paging
 set whichwrap=b,s,h,l,<,>,[,]   " Move across lines by moving cursor left/right
 set virtualedit=block   " Enables selection of places without characters
 
-set wildmenu        " Completion candidates are listed on the status line
+set wildmenu            " Completion candidates are listed on the status line
 
 
 " -----------------------------------------------------------------------------
@@ -102,7 +102,7 @@ set splitbelow          " Open new window below
 
 
 " > COLOR SCHEME
-colorscheme moonfly " (bluz71/vim-moonfly-colors)
+colorscheme moonfly     " (bluz71/vim-moonfly-colors)
 
 
 
