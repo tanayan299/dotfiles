@@ -3,7 +3,6 @@
 " ステータスラインの見た目を変更する
 " カラースキーマ
 " Add comment
-" Edit README
 
 
 " =============================================================================
@@ -27,25 +26,21 @@ call plug#end()
 set encoding=utf-8      " Encoding in Vim
 scriptencoding utf-8    " Encoding in Vim Script
 
-" > SYNTAX
-syntax enable       " Syntax highlighting
-set hlsearch        " Highlight searches
-
-" > SEARCH
-set incsearch       " do incremental searching
-set ignorecase      " Case-insensitive
-set smartcase       " Case-insensitive when entering only lowercase letters
 
 " > DISABLE SWAP
-set nowritebackup
-set nobackup
-set noswapfile
+set nowritebackup   " Do not create backup before overwriting files
+set nobackup        " Do not create backup before overwriting files
+set noswapfile      " Do not create a swap file
 
 " > MUTE
 " Mute
-set t_vb=
-set visualbell
-set noerrorbells
+set visualbell      " Use a visual bell instead of beeping
+set t_vb=           " 'visualbell' display contents
+                    " Empty means 'do not display anything'
+set noerrorbells    " Do not beep when displaying error message
+
+set ttyfast         " Fast terminal connection
+set lazyredraw      " Reduce the frequency of screen redraws
 
 " -----------------------------------------------------------------------------
 " Editor setting
@@ -61,31 +56,62 @@ set softtabstop=2   " Number of spaces inserted with <Tab>
 set expandtab       " Convert tabs to spaces
 set smarttab        " <Tab> inserts blanks according to 'shiftwidth'.
 
+" > SEARCH
+set incsearch       " do incremental searching
+set ignorecase      " Case-insensitive
+set smartcase       " Case-insensitive when entering only lowercase letters
+set wrapscan        " Searches wrap around the end of the file
+
 set backspace=indent,eol,start  " Enable delete on backspace
+
+" Automatic continuation of comment out at line break
+autocmd FileType * setlocal formatoptions-=ro
+
+" > MOVING
+set scrolloff=5     " keep 5 lines when scrolling
+set nostartofline   " don't jump to first character when paging
+set whichwrap=b,s,h,l,<,>,[,]   " Move across lines by moving cursor left/right
+set virtualedit=block   " Enables selection of places without characters
+
+set wildmenu        " Completion candidates are listed on the status line
 
 
 " -----------------------------------------------------------------------------
 " Visual setting
 " -----------------------------------------------------------------------------
+" > SYNTAX
+syntax enable           " Syntax highlighting
+set hlsearch            " Highlight searches
+
 set number              " Display line numbers
+set title               " show title in console title bar
+set laststatus=2        " Always display two status lines
 set cursorline          " Show cursor line
 set colorcolumn=80      " Display vertical line at column 80
+
 set wrap                " Lines longer than the width of the window will wrap
                         " and displaying continues on the next line.
 set linebreak           " Wrap at a good place
 set breakindent         " Indent even for wrapped line
 set display=lastline    " Avoid long lines being truncated to ＠
 
+set showcmd             " Display the command being entered at the bottom right
+set ruler               " Display Cursor position at the bottom right
+
+set shortmess=atI       " Abbreviate messages
+
+set listchars=tab:>-,trail:~,eol:$  " Character format displayed by 'set list'
+
+" > Window
+set splitright          " Open new window right
+set splitbelow          " Open new window below
+
+
 " > COLOR SCHEME
 colorscheme moonfly " (bluz71/vim-moonfly-colors)
 
 
-set showcmd         " Display the command being entered at the bottom right
 
-
-
-set clipboard=unnamed,autoselect
-set listchars=tab:>-
 
 
 
