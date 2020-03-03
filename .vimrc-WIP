@@ -103,9 +103,10 @@ set splitbelow          " Open new window below
 
 " > COLOR SCHEME
 colorscheme moonfly     " (bluz71/vim-moonfly-colors)
-
-
-
+" use 256bit terminal colors
+if exists('+termguicolors')
+set termguicolors
+endif
 
 
 
@@ -118,10 +119,6 @@ colorscheme moonfly     " (bluz71/vim-moonfly-colors)
 
 "" EDIT EDIT enable moonlight / moonfly
 let g:moonflyCursorLineNr = 0
-" use 256bit terminal colors
-if exists('+termguicolors')
-set termguicolors
-endif
 
 
 
