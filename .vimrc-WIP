@@ -1,3 +1,8 @@
+" WIP
+" ToDo
+" ステータスラインの見た目を変更する
+" カラースキーマ
+
 
 " =============================================================================
 " Plugins
@@ -6,7 +11,20 @@
 call plug#begin('~/.vim/plugged')
 
 " Make sure you use single quotes
+" > Visual
+Plug 'itchyny/lightline.vim'
+Plug 'ryanoasis/vim-devicons'
+
+
+" > Color scheme
 Plug 'bluz71/vim-moonfly-colors'
+
+" > Git
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+
+
+
 Plug 'bronson/vim-trailing-whitespace'  " Show useless trailing spaces
 Plug 'markonm/traces.vim'               " Real-time replacement
 call plug#end()
@@ -16,21 +34,19 @@ call plug#end()
 " Basic setting
 " =============================================================================
 
-" > ENCODE SETTING
+" > Encode setting
 set encoding=utf-8      " Encoding in Vim
 scriptencoding utf-8    " Encoding in Vim Script
 
-
-" > DISABLE SWAP
+" > Disable swap
 set nowritebackup   " Do not create backup before overwriting files
 set nobackup        " Do not create backup before overwriting files
 set noswapfile      " Do not create a swap file
 
-" > MUTE
-" Mute
+" > Mute
 set visualbell      " Use a visual bell instead of beeping
 set t_vb=           " 'visualbell' display contents
-                    " Empty means 'do not display anything'
+                    " Empty means 'do not display nothing'
 set noerrorbells    " Do not beep when displaying error message
 
 set ttyfast         " Fast terminal connection
@@ -40,7 +56,7 @@ set lazyredraw      " Reduce the frequency of screen redraws
 " Editor setting
 " -----------------------------------------------------------------------------
 
-" > INDENT
+" > Indent
 set textwidth=0     " Maximum width of text that is being inserted
                     " A zero value disables this
 set autoindent      " Copy indent from current line when starting a new line
@@ -48,9 +64,9 @@ set smartindent     " adjust the indent of the next line
 set shiftwidth=2    " Indent width (number of spaces)
 set softtabstop=2   " Number of spaces inserted with <Tab>
 set expandtab       " Convert tabs to spaces
-set smarttab        " <Tab> inserts blanks according to 'shiftwidth'.
+set smarttab        " <Tab> inserts blanks according to 'shiftwidth'
 
-" > SEARCH
+" > Search
 set incsearch       " do incremental searching
 set ignorecase      " Case-insensitive
 set smartcase       " Case-insensitive when entering only lowercase letters
@@ -58,30 +74,57 @@ set wrapscan        " Searches wrap around the end of the file
 
 set backspace=indent,eol,start  " Enable delete on backspace
 
+set undolevels=1000 " Maximum number of Undo
+
 " Automatic continuation of comment out at line break
 autocmd FileType * setlocal formatoptions-=ro
 
-" > MOVING
+" > Moving
 set scrolloff=5         " keep 5 lines when scrolling
 set nostartofline       " don't jump to first character when paging
 set whichwrap=b,s,h,l,<,>,[,]   " Move across lines by moving cursor left/right
 set virtualedit=block   " Enables selection of places without characters
 
+" > Command line complement
 set wildmenu            " Completion candidates are listed on the status line
+set wildmode=full       " Complete the next full match
 
+" Specify indent by file type
+augroup fileTypeIndent
+    autocmd!
+    filetype plugin indent on
+    "sw=softtabstop, sts=shiftwidth, ts=tabstop, et=expandtab
+    autocmd FileType vim         setlocal sw=2 sts=2 ts=2 et
+    autocmd FileType sh          setlocal sw=2 sts=2 ts=2 et
+    autocmd FileType python      setlocal sw=4 sts=4 ts=4 et
+    autocmd FileType json        setlocal sw=4 sts=4 ts=4 et
+    autocmd FileType xml         setlocal sw=4 sts=4 ts=4 et
+    autocmd FileType go          setlocal sw=4 sts=4 ts=4 et
+    autocmd FileType html        setlocal sw=4 sts=4 ts=4 et
+    autocmd FileType css         setlocal sw=4 sts=4 ts=4 et
+    autocmd FileType javascript  setlocal sw=4 sts=4 ts=4 et
+augroup END
+
+" Go to last edit when file opened
+augroup vimrcEx
+  au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
+  \ exe "normal g`\"" | endif
+augroup END
 
 " -----------------------------------------------------------------------------
 " Visual setting
 " -----------------------------------------------------------------------------
-" > SYNTAX
+" > Syntax
 syntax enable           " Syntax highlighting
 set hlsearch            " Highlight searches
 
 set number              " Display line numbers
 set title               " show title in console title bar
 set laststatus=2        " Always display two status lines
+set signcolumn=yes      " Always show placemark lines
 set cursorline          " Show cursor line
 set colorcolumn=80      " Display vertical line at column 80
+set pumheight=10        " Number of candidate displays for completion
 
 set wrap                " Lines longer than the width of the window will wrap
                         " and displaying continues on the next line.
@@ -100,27 +143,68 @@ set listchars=tab:>-,trail:~,eol:$  " Character format displayed by 'set list'
 set splitright          " Open new window right
 set splitbelow          " Open new window below
 
-
-" > COLOR SCHEME
+" > Color scheme
 colorscheme moonfly     " (bluz71/vim-moonfly-colors)
 " use 256bit terminal colors
 if exists('+termguicolors')
 set termguicolors
 endif
 
+" Full-width space highlighted in white
+function! ZenkakuSpace()
+  highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=grey
+endfunction
 
-
+if has('syntax')
+  augroup ZenkakuSpace
+    autocmd!
+    autocmd ColorScheme * call ZenkakuSpace()
+    autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
+  augroup END
+  call ZenkakuSpace()
+endif
 
 " =============================================================================
 " Plugin setting
 " =============================================================================
 
+" -----------------------------------------------------------------------------
+" gitgutter
+" -----------------------------------------------------------------------------
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '→'
+let g:gitgutter_sign_removed = 'X'
+
+" -----------------------------------------------------------------------------
+" lightline
+" -----------------------------------------------------------------------------
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead',
+      \   'filetype': 'MyFiletype',
+      \   'fileformat': 'MyFileformat',
+      \ },
+      \ }
+
+" > To add the appropriate icon to lightline (ryanoasis/vim-devicons)
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+endfunction
+
+function! MyFileformat()
+  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+endfunction
 
 
-"" EDIT EDIT enable moonlight / moonfly
-let g:moonflyCursorLineNr = 0
 
-
+" =============================================================================
+" Key mapping
+" =============================================================================
 
 
 
