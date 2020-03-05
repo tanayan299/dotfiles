@@ -3,6 +3,12 @@
 "
 " Use Font:Ricty Diminished with-icons
 
+" Update the number of errors in the status line with ':w'
+augroup UpdateLightLine
+  autocmd!
+  autocmd BufWritePost * call lightline#update()
+augroup END
+
 " =============================================================================
 " Plugins
 " =============================================================================
@@ -26,7 +32,6 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
 " > Syntax
-"Plug 'hynek/vim-python-pep8-indent'
 "Plug 'Glench/Vim-Jinja2-Syntax'
 
 " > Git
@@ -203,7 +208,8 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'filename', 'modified', 'readonly' ] ]
+      \             [ 'gitbranch', 'filename', 'modified', 'readonly' ],
+      \             [ 'linter_ok', 'linter_errors', 'linter_warnings' ] ]
       \ },
       \ 'component': {
       \   'readonly': '%{&readonly?"":""}',
@@ -213,7 +219,43 @@ let g:lightline = {
       \   'filetype': 'MyFiletype',
       \   'fileformat': 'MyFileformat',
       \ },
+      \ 'component_expand': {
+      \     'linter_ok': 'LightlineLinterOK',
+      \     'linter_warnings': 'LightlineLinterWarnings',
+      \     'linter_errors': 'LightlineLinterErrors'
+      \ },
+      \ 'component_type': {
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'left'
+      \ },
+      \ 'separator': {
+      \     'left': '',
+      \     'right': ''
+      \ },
+      \ 'subseparator': {
+      \     'left': '',
+      \     'right': '|'
       \ }
+      \ }
+
+" To show number of warningss to lightline
+function! LightlineLinterWarnings() abort
+  let l:counts = lsp#get_buffer_diagnostics_counts()
+  return l:counts.warning == 0 ? '' : printf('Warn:%d', l:counts.warning)
+endfunction
+
+" To show number of errors to lightline
+function! LightlineLinterErrors() abort
+  let l:counts = lsp#get_buffer_diagnostics_counts()
+  return l:counts.error == 0 ? '' : printf('Error:%d', l:counts.error)
+endfunction
+
+function! LightlineLinterOK() abort
+  let l:counts = lsp#get_buffer_diagnostics_counts()
+  let l:counts.total = l:counts.error + l:counts.warning + l:counts.information
+  return l:counts.total == 0 ? 'OK': ''
+endfunction
 
 
 " To add the appropriate icon to lightline (ryanoasis/vim-devicons)
