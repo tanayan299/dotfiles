@@ -1,8 +1,7 @@
-" WIP
-" ToDo
-" ステータスラインの見た目を変更する
-" カラースキーマ
-
+" Required
+" yum install python3 python36-devel
+"
+" Use Font:Ricty Diminished with-icons
 
 " =============================================================================
 " Plugins
@@ -10,25 +9,37 @@
 
 call plug#begin('~/.vim/plugged')
 
-" Make sure you use single quotes
+" > Editor
+Plug 'scrooloose/nerdtree'              " file system explorer
+Plug 'bronson/vim-trailing-whitespace'  " Show useless trailing spaces
+Plug 'markonm/traces.vim'               " Real-time replacement
+
 " > Visual
-Plug 'itchyny/lightline.vim'
-Plug 'ryanoasis/vim-devicons'
+Plug 'itchyny/lightline.vim'            " statusline/tabline plugin
+Plug 'ryanoasis/vim-devicons'           " Adds filetype glyphs (icons)
 
+" > LSP
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 
-" > Color scheme
-Plug 'bluz71/vim-moonfly-colors'
+" > Syntax
+"Plug 'hynek/vim-python-pep8-indent'
+"Plug 'Glench/Vim-Jinja2-Syntax'
+
+Plug 'scrooloose/syntastic'
 
 " > Git
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
+" > Color scheme
+Plug 'bluz71/vim-moonfly-colors'
 
 
-Plug 'bronson/vim-trailing-whitespace'  " Show useless trailing spaces
-Plug 'markonm/traces.vim'               " Real-time replacement
 call plug#end()
-
 
 " =============================================================================
 " Basic setting
@@ -168,12 +179,38 @@ endif
 " Plugin setting
 " =============================================================================
 
+" > vim-lsp
+" Lint機能有効化
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+
+" 左側にアイコンを表示
+let g:lsp_signs_enabled = 1
+
+" アイコンの変更
+let g:lsp_signs_error = {'text': 'E'}
+let g:lsp_signs_warning = {'text': 'W'}
+
+let g:lsp_highlights_enabled = 0
+let g:lsp_textprop_enabled = 0
+
+
+" > scrooloose/syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+
 " -----------------------------------------------------------------------------
 " gitgutter
 " -----------------------------------------------------------------------------
 let g:gitgutter_sign_added = '+'
-let g:gitgutter_sign_modified = '→'
-let g:gitgutter_sign_removed = 'X'
+let g:gitgutter_sign_modified = '>'
+let g:gitgutter_sign_removed = 'x'
 
 " -----------------------------------------------------------------------------
 " lightline
@@ -182,7 +219,10 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'gitbranch', 'filename', 'modified', 'readonly' ] ]
+      \ },
+      \ 'component': {
+      \   'readonly': '%{&readonly?"":""}',
       \ },
       \ 'component_function': {
       \   'gitbranch': 'FugitiveHead',
@@ -191,22 +231,39 @@ let g:lightline = {
       \ },
       \ }
 
-" > To add the appropriate icon to lightline (ryanoasis/vim-devicons)
+
+" To add the appropriate icon to lightline (ryanoasis/vim-devicons)
 function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' .
+        \ WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
 endfunction
 
 function! MyFileformat()
-  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+  return winwidth(0) > 70 ? (&fileformat . ' ' .
+        \ WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
 
 
+" -----------------------------------------------------------------------------
+" NERDTree
+" -----------------------------------------------------------------------------
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = '▼'
+let NERDTreeShowHidden=1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
+      \ && b:NERDTree.isTabTree()) | q | endif
+
+" Enabled icon to NERDTree (ryanoasis/vim-devicons)
+let g:webdevicons_enable_nerdtree = 1
+" Show the nerdtree brackets around flags (ryanoasis/vim-devicons)
+let g:webdevicons_conceal_nerdtree_brackets = 1
 
 " =============================================================================
 " Key mapping
 " =============================================================================
 
-
+" > NERDTree
+map <C-n> :NERDTreeToggle<CR>
 
 
 

@@ -1,4 +1,5 @@
     syn on
+
     syntax enable
     let g:solarized_termtrans=1
     set textwidth=0
@@ -36,7 +37,7 @@
 
     " Shortcut to rapidly toggle `set list`
     nmap <leader>iul :set list!<CR>
-     
+
     " Use the same symbols as TextMate for tabstops and EOLs
     set listchars=tab:▸\ ,eol:¬
 
@@ -126,5 +127,5 @@ let NERDTreeShowHidden=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 set number
-set autoindent 
+set autoindent
 set smartindent
