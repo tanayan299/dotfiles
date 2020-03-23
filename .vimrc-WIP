@@ -32,7 +32,7 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
 " > Syntax
-"Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'pearofducks/ansible-vim'
 
 " > Git
 Plug 'airblade/vim-gitgutter'
@@ -283,6 +283,15 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
 let g:webdevicons_enable_nerdtree = 1
 " Show the nerdtree brackets around flags (ryanoasis/vim-devicons)
 let g:webdevicons_conceal_nerdtree_brackets = 1
+
+" -----------------------------------------------------------------------------
+" Syntax
+" -----------------------------------------------------------------------------
+let g:ansible_unindent_after_newline = 1
+let g:ansible_extra_syntaxes = "sh.vim ruby.vim"
+let g:ansible_attribute_highlight = "ob"
+let g:ansible_name_highlight = 'd'
+let g:ansible_extra_keywords_higholight = 1
 
 " =============================================================================
 " Key mapping
