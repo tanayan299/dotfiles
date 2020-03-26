@@ -31,6 +31,8 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
+Plug 'hashivim/vim-terraform' , {'for': 'terraform'}
+
 " > Syntax
 Plug 'pearofducks/ansible-vim'
 
@@ -194,6 +196,18 @@ let g:lsp_signs_enabled = 1
 let g:lsp_signs_error = {'text': 'E'}
 let g:lsp_signs_warning = {'text': 'W'}
 
+" LSP Server Setting
+" > for terraform
+if executable('terraform-lsp')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'terraform-lsp',
+    \ 'cmd': {server_info->['terraform-lsp']},
+    \ 'whitelist': ['terraform','tf'],
+    \ })
+endif
+
+let g:terraform_fmt_on_save = 1 " Format when saving
+
 " -----------------------------------------------------------------------------
 " gitgutter
 " -----------------------------------------------------------------------------
@@ -287,11 +301,13 @@ let g:webdevicons_conceal_nerdtree_brackets = 1
 " -----------------------------------------------------------------------------
 " Syntax
 " -----------------------------------------------------------------------------
+" > ansible-vim
 let g:ansible_unindent_after_newline = 1
 let g:ansible_extra_syntaxes = "sh.vim ruby.vim"
 let g:ansible_attribute_highlight = "ob"
 let g:ansible_name_highlight = 'd'
 let g:ansible_extra_keywords_higholight = 1
+
 
 " =============================================================================
 " Key mapping
